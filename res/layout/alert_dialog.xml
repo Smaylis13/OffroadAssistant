@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:padding="15dip"
+  android:background="@color/wallet_hint_foreground_holo_dark">
+     <EditText
+        android:id="@+id/titre1"
+        android:layout_gravity="center"
+		android:layout_width="200dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="-2dp"
+		android:padding="10dp"
+		android:hint="Titre"
+		android:textColorHint="#bbbbbb"
+		android:drawableLeft="@drawable/title" />
+     
+     <EditText        
+         android:id="@+id/description1"
+        android:layout_gravity="center"
+		android:layout_width="200dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="-2dp"
+		android:padding="10dp"
+		android:hint="Description"
+		android:textColorHint="#bbbbbb"
+		android:drawableLeft="@drawable/write13"
+		android:layout_below="@id/titre1" />
+
+    <Button
+        android:id="@+id/couleur1"
+        style="@style/button_text"
+        android:layout_below="@id/description1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button"
+        android:text="Couleur"
+        android:drawableLeft="@drawable/color4" />
+
+
+ 
+</RelativeLayout>

@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -257,12 +258,38 @@ public static final Integer[] icons = { R.drawable.carte,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+   		// The Custom Toast Layout Imported here
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		View toastRoot = null;
+		// The actual toast generated here.
+		Toast toast = new Toast(getActivity().getApplicationContext());
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL,0, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.play_pause) {
+        	if(item.getTitle().equals("Play")){
+
+                // Call toast.xml file for toast layout
+                toastRoot = inflater.inflate(R.layout.play_toast, null);
+        		toast.setView(toastRoot);
+        		toast.show();
+
+	        	item.setIcon(getResources().getDrawable(R.drawable.pause7));
+	        	item.setTitle("Pause");
+        	}else{
+                // Call toast.xml file for toast layout
+                toastRoot = inflater.inflate(R.layout.pause_toast, null);
+        		toast.setView(toastRoot);
+        		toast.show();
+	        	item.setIcon(getResources().getDrawable(R.drawable.play1));
+	        	item.setTitle("Play");
+        	}
+        	
+        	//Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 

@@ -15,7 +15,7 @@
         android:layout_height="170dp"
         android:layout_marginTop="@dimen/normal_padding"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/header_logo" />
+        android:src="@drawable/map35" />
 
     <Button
         android:id="@+id/create_account"

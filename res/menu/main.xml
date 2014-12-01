@@ -3,9 +3,30 @@
     tools:context="fr.masterdapm.toulon.MainActivity" >
 
     <item
-        android:id="@+id/action_example"
-        android:showAsAction="withText|ifRoom"
-        android:title="@string/action_example"/>
+        android:id="@+id/rec"
+        android:icon="@drawable/distance2"
+        android:showAsAction="ifRoom"
+        android:title="@string/trajet">
+      <menu android:id="@+id/sousmenu">
+          
+		 <item android:id="@+id/enregistrer"
+		       android:title="Enregistrer"
+		       android:icon="@drawable/save28"
+			   android:showAsAction="always|withText"   />	
+	 		
+	 	<item android:id="@+id/play_pause"
+		       android:title="Play"
+		       android:icon="@drawable/play1"
+			   android:showAsAction="always|withText"   />
+	 	
+	 	<item android:id="@+id/effacer"
+		       android:title="Effacer"
+		       android:icon="@drawable/effacer"
+			   android:showAsAction="always|withText"   />
+		 
+     </menu>
+    </item>
+    
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
