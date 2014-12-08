@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.*;
 
 
 import fr.masterdapm.toulon.connexion.ConnexionActivity;
+import fr.masterdapm.toulon.fragment.CMesTrajets;
 import fr.masterdapm.toulon.fragment.FragContacts;
 import fr.masterdapm.toulon.fragment.FragMap;
 
@@ -81,8 +82,6 @@ public class MainActivity extends Activity
             TAG= "CARTE";
 			fragment = fragmentManager.findFragmentByTag(TAG);
             if(fragment == null){		
-            	Toast.makeText(getApplicationContext(), "iL existe PAS! "+TAG, Toast.LENGTH_SHORT).show();
-
 	            fragment = new FragMap();
             }
             break;
@@ -93,7 +92,7 @@ public class MainActivity extends Activity
             if(fragment == null){    		
 				Toast.makeText(this, "iL existe PAS! "+TAG, Toast.LENGTH_SHORT).show();
 
-				fragment = new FragContacts();
+				fragment = new CMesTrajets();
 			}
         break;
         case 3:            

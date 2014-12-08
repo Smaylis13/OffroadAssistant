@@ -521,7 +521,7 @@ containing a value of this type.
         public static final int write13=0x7f02003c;
     }
     public static final class id {
-        public static final int action_settings=0x7f0b002a;
+        public static final int action_settings=0x7f0b002c;
         public static final int android_picture=0x7f0b0014;
         public static final int book_now=0x7f0b000e;
         public static final int buyButton=0x7f0b000a;
@@ -535,15 +535,16 @@ containing a value of this type.
         public static final int create_account=0x7f0b0015;
         public static final int description1=0x7f0b001e;
         public static final int drawer_layout=0x7f0b0019;
-        public static final int effacer=0x7f0b002f;
-        public static final int enregistrer=0x7f0b002d;
+        public static final int effacer=0x7f0b0031;
+        public static final int enregistrer=0x7f0b002f;
         public static final int grayscale=0x7f0b0012;
         public static final int hex_val=0x7f0b0023;
         public static final int holo_dark=0x7f0b0005;
         public static final int holo_light=0x7f0b0006;
         public static final int hybrid=0x7f0b0000;
-        public static final int image=0x7f0b0029;
-        public static final int imageViewIcon=0x7f0b0027;
+        public static final int image=0x7f0b002b;
+        public static final int imageViewIcon=0x7f0b0029;
+        public static final int list=0x7f0b0026;
         public static final int list_couleur=0x7f0b001c;
         public static final int map=0x7f0b0020;
         public static final int match_parent=0x7f0b000c;
@@ -553,17 +554,18 @@ containing a value of this type.
         public static final int none=0x7f0b0001;
         public static final int normal=0x7f0b0002;
         public static final int old_color_panel=0x7f0b0024;
-        public static final int play_pause=0x7f0b002e;
+        public static final int play_pause=0x7f0b0030;
         public static final int production=0x7f0b0007;
-        public static final int rec=0x7f0b002b;
+        public static final int rec=0x7f0b002d;
         public static final int sandbox=0x7f0b0008;
         public static final int satellite=0x7f0b0003;
-        public static final int section_label=0x7f0b0026;
+        public static final int section_label=0x7f0b0027;
         public static final int selectionDetails=0x7f0b000b;
-        public static final int sousmenu=0x7f0b002c;
+        public static final int sousmenu=0x7f0b002e;
         public static final int strict_sandbox=0x7f0b0009;
         public static final int terrain=0x7f0b0004;
-        public static final int textViewName=0x7f0b0028;
+        public static final int textTitle=0x7f0b0028;
+        public static final int textViewName=0x7f0b002a;
         public static final int text_hex_wrapper=0x7f0b0022;
         public static final int titre1=0x7f0b001d;
         public static final int user_login=0x7f0b0016;
@@ -580,11 +582,13 @@ containing a value of this type.
         public static final int alert_dialog=0x7f030003;
         public static final int carte_main=0x7f030004;
         public static final int dialog_color_picker=0x7f030005;
-        public static final int fragment_main=0x7f030006;
-        public static final int fragment_navigation_drawer=0x7f030007;
-        public static final int listview_item_row=0x7f030008;
-        public static final int pause_toast=0x7f030009;
-        public static final int play_toast=0x7f03000a;
+        public static final int fragment_list_trajet=0x7f030006;
+        public static final int fragment_main=0x7f030007;
+        public static final int fragment_navigation_drawer=0x7f030008;
+        public static final int list_item=0x7f030009;
+        public static final int listview_item_row=0x7f03000a;
+        public static final int pause_toast=0x7f03000b;
+        public static final int play_toast=0x7f03000c;
     }
     public static final class menu {
         public static final int global=0x7f0a0000;

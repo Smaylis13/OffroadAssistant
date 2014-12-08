@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="19"
         android:targetSdkVersion="21" />
+
+    
        <permission
       android:name="com.example.googlemaps.permission.MAPS_RECEIVE"
       android:protectionLevel="signature" />
@@ -58,7 +60,9 @@
                 <!-- Goolge API Key -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBbDdGSQihb_qc8t7O0SVqjPQqmnGLRlvk" />
+            android:value="AIzaSyDUMJCnoUHVgrAf8pgF9oGEiZ0whBVAU44" />
+            <uses-library
+        android:name="com.google.android.maps" />
     </application>
 
 </manifest>
