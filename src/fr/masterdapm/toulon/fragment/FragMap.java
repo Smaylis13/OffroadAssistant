@@ -121,7 +121,18 @@ public class FragMap extends Fragment implements LocationListener{
 		map.getUiSettings().setMyLocationButtonEnabled(true);//false
 		map.setMyLocationEnabled(true);
 		
-		
+		/**
+		 * TYPE DE MAP
+		 */
+		if (VUE_RANDO.equals("SatView")) {
+			map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+			
+		} else if (VUE_RANDO.equals("StreetView")) {
+			map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+		} else if (VUE_RANDO.equals("TerrainView")){
+			map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+		} 
 		/*
 		 * ====================CHARGEMENT DE LA MAP (Si c'est le choix de
 		 * l'user)================
