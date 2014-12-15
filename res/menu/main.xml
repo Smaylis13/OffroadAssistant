@@ -12,7 +12,8 @@
 		 <item android:id="@+id/enregistrer"
 		       android:title="Enregistrer"
 		       android:icon="@drawable/save28"
-			   android:showAsAction="always|withText"   />	
+			   android:showAsAction="always|withText" 
+			   android:enabled="false"  />	
 	 		
 	 	<item android:id="@+id/play_pause"
 		       android:title="Play"
@@ -22,7 +23,8 @@
 	 	<item android:id="@+id/effacer"
 		       android:title="Effacer"
 		       android:icon="@drawable/effacer"
-			   android:showAsAction="always|withText"   />
+			   android:showAsAction="always|withText" 
+			   android:enabled="false"  />
 		 
      </menu>
     </item>

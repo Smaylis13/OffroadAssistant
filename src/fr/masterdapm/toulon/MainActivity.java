@@ -86,11 +86,11 @@ public class MainActivity extends Activity
             }
             break;
         case 2:
-            mTitle = getString(R.string.statistiques);
-            TAG = "STATISTIQUES";	
+            mTitle = getString(R.string.trajet);
+            TAG = "TRAJET";	
 			fragment = fragmentManager.findFragmentByTag(TAG);
             if(fragment == null){    		
-				Toast.makeText(this, "iL existe PAS! "+TAG, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "iL N'existe PAS! "+TAG, Toast.LENGTH_SHORT).show();
 
 				fragment = new CMesTrajets();
 			}
@@ -100,7 +100,7 @@ public class MainActivity extends Activity
 			TAG = "CONTACTS";
 			fragment = fragmentManager.findFragmentByTag(TAG);
 			if(fragment == null){    		
-				Toast.makeText(getApplicationContext(), "iL existe PAS! "+TAG, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "iL N'existe PAS! "+TAG, Toast.LENGTH_SHORT).show();
 
 				fragment = new FragContacts();
 			}

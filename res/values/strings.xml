@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">ProjAndroid</string>
+    <string name="hello_world">hello_world</string>
     <string name="carte">Carte</string>
     <string name="contacts">Contacts</string>
     <string name="statistiques">Statistiques</string>
@@ -9,13 +10,41 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
-    <string name="trajet">Trajet</string>
+    <string name="trajet">Mes trajets</string>
     
     <string name="create_account">Créer un compte</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="connect">Se connecter</string>
     <string name="mapKey">AIzaSyBbDdGSQihb_qc8t7O0SVqjPQqmnGLRlvk</string>
+    	<string name="tvReglagePseudo">Pseudo : </string>
+	<string name="etReglagePseudo">Entrez votre pseudo pour la randonnée </string>
+	<string name="rbSatView">Vue satellite</string>
+	<string name="rbStreetView">Street view </string>
+	<string name="rbTraficView">Vue terrain </string>
+	<string name="tvReglageChoixVue"> Chosissez la vue pour votre carte : </string>
+	<string name="rb4x4"> mode 4x4 </string>
+	<string name="rbPied"> mode pédestre </string>
+	<string name="tvReglageChoixTypeRando"> Chosissez le mode de randonnée : </string>
+	<string name="btValidateChoice">Valider choix</string>
+	<string name="apiKey">AIzaSyBwWoSXAPQLJvYcze3Z1buzEFZFG57lRO4</string>
+    <string name="textViewDialog">Precisez le type de WayPoint :</string>
+    <string name="type">Type du waypoint :</string>
+    <string name="btTest1">____________________________________________________________</string>
+    <string name="btTest2">Boutton 2</string>
+    <string name="tvNomRando">Nom randonnée :</string>
+    <string name="tvDescRando">Description :</string>
+    <string name="tvDiffRando">Difficultée :</string>
+    <string name="etNomRando">Donnez un nom à votre randonnée</string>
+    <string name="etDescRando">Donnez vos impressions sur cette randonnée</string>
+    <string name="dif1">1</string>
+    <string name="dif2">2</string>
+    <string name="dif3">3</string>
+    <string name="dif4">4</string>
+    <string name="dif5">5</string>
+    <string name="refresh">Appliquer changement</string>
+    <string name="howToRefresh">Basculer en mode paysage pour mettre à jour la base de donnée.</string>
+    
     
         <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
@@ -31,4 +60,5 @@
     <string name="color3_summary">picker with alpha slider</string>
     <string name="color4_title">Color 4</string>
     <string name="color4_summary">color set with HEX code in xml</string>
+    
 </resources>

@@ -5,13 +5,17 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="19"
+        android:minSdkVersion="13"
         android:targetSdkVersion="21" />
 
     
        <permission
       android:name="com.example.googlemaps.permission.MAPS_RECEIVE"
       android:protectionLevel="signature" />
+       
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.ACCES_GPS" />
+    <uses-permission android:name="android.permission.ACCES_ASSISTED_GPS" />       
        
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
