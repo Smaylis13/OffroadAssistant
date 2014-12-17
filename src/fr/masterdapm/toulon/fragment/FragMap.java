@@ -7,12 +7,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapView;
@@ -26,6 +28,9 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import fr.masterdapm.toulon.R;
+import fr.masterdapm.toulon.SmsReceiver;
+import fr.masterdapm.toulon.item.DrawerItemCustomAdapter;
+import fr.masterdapm.toulon.item.ObjectDrawerItem;
 import fr.masterdapm.toulon.sql.PointRando;
 import fr.masterdapm.toulon.sql.RandoBDD;
 import fr.masterdapm.toulon.sql.Randonnee;
@@ -33,12 +38,14 @@ import fr.masterdapm.toulon.util.AdapterMesRandos;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +64,8 @@ public class FragMap extends Fragment implements LocationListener{
 	private MapView mapView;
 	public static GoogleMap map;
 	private LocationManager locationManager;
-    private double latitude ;
-    private double longitude ;
+   // private double latitude ;
+   // private double longitude ;
     public static List<LatLng>  lListPoints=  new ArrayList<LatLng>();
     public static RandoBDD saveRando;
     private int idSelectionne;
@@ -95,7 +102,8 @@ public class FragMap extends Fragment implements LocationListener{
 	public static String TYPE_RANDO = "";
 	public static String VUE_RANDO = "";
 
-
+	//public static Boolean SMS_R_WAYPOINT = false;
+	public static boolean SMS_R_WAYPOINT = false; 
 
 
 
@@ -103,7 +111,7 @@ public class FragMap extends Fragment implements LocationListener{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View v = inflater.inflate(R.layout.carte_main, container, false);
+		final View v = inflater.inflate(R.layout.carte_main, container, false);
 		
 		/* ===============DETERMINATION DE L'ID DE LA RANDO================ */
 		saveRando = new RandoBDD(getActivity().getApplicationContext());
@@ -163,40 +171,65 @@ public class FragMap extends Fragment implements LocationListener{
 		
 
 /*-----------------------------------------------------------------------------------------------*/
-		/*locationManager = (LocationManager) getActivity()
-				.getSystemService(Context.LOCATION_SERVICE);
-        // getting GPS status
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-//Toast.makeText(getActivity().getApplicationContext(),"GPS (Y) ", Toast.LENGTH_SHORT).show();
 
-        }
-        // getting network status
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-//Toast.makeText(getActivity().getApplicationContext(),"Network (Y) ", Toast.LENGTH_SHORT).show();
-        }*/
-       // mlocation= locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-      /*  mlocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if (mlocation != null) {
-Toast.makeText(getActivity().getApplicationContext(),
-		mlocation.getLatitude()+", "+mlocation.getLongitude(), Toast.LENGTH_LONG).show();
-        }*/
-        //mlocation = map.getMyLocation();
 		MapsInitializer.initialize(this.getActivity());
 		//map.animateCamera(CameraUpdateFactory.zoomTo( 13 ));
 
-
+/*===================================ON MY LOCATION CHANGED ===============================================*/
         map.setOnMyLocationChangeListener(new OnMyLocationChangeListener() {			
 			@Override
 			public void onMyLocationChange(Location arg0) {
 				// TODO Auto-generated method stub
+				
+				if(SMS_R_WAYPOINT){
+					AlertDialog.Builder builderSingle = new AlertDialog.Builder(
+	 	                    getActivity());
 
+				    builderSingle.setIcon(R.drawable.send1);
+				    builderSingle.setTitle("Message \"WayPoint\"");
+				    String lMsgWayPoint = "Vous avez reçu un \"WayPoint\" de la part de "+ SmsReceiver.mPhoneNumber;
+				    builderSingle.setMessage(lMsgWayPoint);
+				    builderSingle.setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							double lat = Double.parseDouble(SmsReceiver.mMsgWayPoint[1]);
+							double lng = Double.parseDouble(SmsReceiver.mMsgWayPoint[2]);
+							
+							LatLng latLng = new LatLng(lat,lng);
+							MarkerOptions marker = new MarkerOptions().position(latLng);
+							
+							marker.title(SmsReceiver.mMsgWayPoint[3]);
+							marker.snippet(SmsReceiver.mMsgWayPoint[4]);
+				
+							
+							map.addMarker(marker);
+							Toast.makeText(getActivity(), "\"WayPoint\" ajouté avec succès!", Toast.LENGTH_SHORT).show();
+						}
+					});
+				    
+				    builderSingle.setNegativeButton("Annuler",
+				            new DialogInterface.OnClickListener() {
+				                @Override
+				                public void onClick(DialogInterface dialog, int which) {
+				                    dialog.dismiss();
+				                }
+				            });
+				    
+				    builderSingle.show();
+					
+				    SMS_R_WAYPOINT = false;
+				}
+				
+				
 			    map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(arg0
 						.getLatitude(), arg0.getLongitude())));
 				String typeItineraire = "itineraire";
 
 		/*---------SI DÉMARRÉE ON AJOUTE LES LIGNE... -----------------*/
 				if (getEtatRandonnee().equals("demarrée")) {
-					//ClickOnEffacer = false;// On remet la variable Effacer a false pour que je
+					ClickOnEffacer = false;// On remet la variable Effacer a false pour que je
 										// sache que c une nouvelle randonnée
 					LatLng coor = new LatLng(arg0.getLatitude(),
 							arg0.getLongitude());
@@ -215,38 +248,122 @@ Toast.makeText(getActivity().getApplicationContext(),
 					mesPoints.add(pointBDD);
 				}
 		    // Getting latitude of the current location
-		    latitude = arg0.getLatitude();
+		  //  latitude = arg0.getLatitude();
 		    // Getting longitude of the current location
-		    longitude = arg0.getLongitude();
-		    // Creating a LatLng object for the current location
-		   // LatLng latLng = new LatLng(latitude, longitude);
-		    //marker = map.addMarker(new MarkerOptions().position(latLng));
-		    // Showing the current location in Google Map
-		   // map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-		    // Zoom in the Google Map
-		    //map.animateCamera(CameraUpdateFactory.zoomTo(16));
-		  /*  if (arg0.distanceTo(mlocation) > 1){
-//Toast.makeText(getActivity().getApplicationContext(),"!"+arg0.distanceTo(location),Toast.LENGTH_LONG).show();
-//Marker marker = map.addMarker(new MarkerOptions().position(latLng));
-		    LatLng lastLatLng = new LatLng(mlocation.getLatitude(),mlocation.getLongitude());
-		    Polyline line = map.addPolyline(new PolylineOptions()
-		     .add(new LatLng(mlocation.getLatitude(),mlocation.getLongitude()),
-		    		 new LatLng(latitude, longitude))
-		     .width(20)
-		     .color(Color.RED));
-//markers.add(marker);
-			mlocation = map.getMyLocation();
-		    }*/	    
-		    
-		    
+		   // longitude = arg0.getLongitude();
+
 			}
 		});
+        
+        /*================ON Click WAY POINT=============================*/
+        
+        map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+			
+			@Override
+			public void onInfoWindowClick(final Marker arg0) {
+				// TODO Auto-generated method stub
+				AlertDialog.Builder builderSingle = new AlertDialog.Builder(
+		                    getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 
+		            builderSingle.setIcon(R.drawable.configway);
+		            builderSingle.setTitle("Configuration");
+		            
+		            List<ObjectDrawerItem> rowItems = new ArrayList<ObjectDrawerItem>();
+		            
+		            rowItems.add(new ObjectDrawerItem(R.drawable.send1,"Envoyer par sms"));
+		            rowItems.add(new ObjectDrawerItem(R.drawable.suppway,"Supprimer"));
+		            
+		            DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(
+		                    v.getContext(),
+		                    R.layout.listview_item_row, rowItems);
+
+		            builderSingle.setNegativeButton("Annuler",
+		                    new DialogInterface.OnClickListener() {
+		                        @Override
+		                        public void onClick(DialogInterface dialog, int which) {
+		                            dialog.dismiss();
+		                        }
+		                    });
+		            /*********************ON CLICK SUPPRIMER/ENVOYER PAR SMS******************/
+		            builderSingle.setAdapter(adapter,
+		                    new DialogInterface.OnClickListener() {
+
+		                        @Override
+		                        public void onClick(DialogInterface dialog, int which) {
+		                        	switch(which){
+		                        	case 0:
+		                        		double lat = arg0.getPosition().latitude;
+		                        		double lng = arg0.getPosition().longitude;
+		                        		String title = arg0.getTitle();
+		                        		String desc = arg0.getSnippet();
+		                        		String messageBody = SmsReceiver.EN_TETE_WAYPOINT 
+		                        				+";"+lat+";"+lng+";"+title+";"+desc+";";
+		                        		SmsManager smsManager = SmsManager.getDefault();
+		                        		smsManager.sendTextMessage("+33651271872", null, messageBody, null, null);
+		    							Toast.makeText(getActivity(), "\"WayPoint\" envoyé avec succès!", Toast.LENGTH_SHORT).show();
+		                        		break;
+		                        	case 1:
+		                        		for (Entry<String, MarkerOptions> e : ensMarkerOpts.entrySet()) {
+		                        		    String key = e.getKey();
+		                        		    MarkerOptions value = e.getValue();
+		                        		    if (value.getPosition().equals(arg0.getPosition())){
+		                        		    	ensMarkerOpts.remove(key);
+		                        		    }
+		                        		}		                        		
+		                        		arg0.remove();
+		                        		break;
+		                        	}
+
+		                        }
+		                    });
+		            builderSingle.setInverseBackgroundForced(false);
+		            builderSingle.show();
+		        /*************************    
+ 				AlertDialog.Builder alert = new AlertDialog.Builder(
+ 	                    getActivity());
+ 		        LayoutInflater factory = LayoutInflater.from(getActivity().getBaseContext());
+				// final View alertDialogView = factory.inflate(R.layout.listview_item_row, null);
+				    String[] listContent = {"January","December"};
+				   ArrayAdapter<String> adapter = new ArrayAdapter<String>(v.getContext(),
+				        android.R.layout.simple_list_item_1,  listContent);
+				 
+				   alert.setAdapter(adapter, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+	 		        //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
+	 		       // alert.setView(alertDialogView);
+	 		        
+	 				alert.setTitle("Envoyer un \"waypoint\"");
+	 				final Button button = (Button) alertDialogView.findViewById(R.id.couleur1);
+	 				final TextView input = (TextView) alertDialogView.findViewById(R.id.titre1);
+	 				alert.setPositiveButton("Envoyer", new DialogInterface.OnClickListener() {
+	 	 				public void onClick(DialogInterface dialog, int whichButton) {
+
+	 	 						 	 					
+	 	 				  }
+	 	 			});
+
+	 				alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+	 	 				  public void onClick(DialogInterface dialog, int whichButton) {
+	 	 				    // Canceled.
+	 	 				  }
+	 	 			});
+	 	 				
+	 	 			alert.setIcon(R.drawable.send1);
+	 	 			alert.show();*/
+			}
+		});
+        
 		/*=====================ON LONG CLICK =================*/
        
      // on click long
         map.setOnMapLongClickListener(new OnMapLongClickListener() {
-     	   int index_couleur=1;
+     	   int index_couleur=8;
             final float[] tabcouleur2 ={
  								   BitmapDescriptorFactory.HUE_AZURE,	            
  								   BitmapDescriptorFactory.HUE_BLUE,	            
@@ -478,20 +595,6 @@ Toast.makeText(getActivity().getApplicationContext(),
 			}
 			saveRando.close();
 		}
-		public static long modulo(long m, long n) {
-			long mod = m % n;
-			return (mod < 0) ? mod + n : mod;
-		}
-
-		public static String milliToDuree(long dureeMilli) {
-			long ms = modulo(dureeMilli, 1000);
-			long s = modulo((dureeMilli / 1000), 60);
-			long m = modulo((dureeMilli / 60000), 60);
-			long h = dureeMilli / 3600000;
-			return h + "h" + m + "m" + s + "s" + ms + "ms";
-		}
-
-
 
 		public static String getEtatRandonnee() {
 			return EtatRandonnee;
@@ -513,4 +616,5 @@ Toast.makeText(getActivity().getApplicationContext(),
 			outState.putBoolean("New", ClickOnEffacer);
 			super.onSaveInstanceState(outState);
 		}
+	   
 }

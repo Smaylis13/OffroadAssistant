@@ -14,15 +14,14 @@ import android.widget.RadioGroup;
 
 public class ConnexionActivity extends Activity {
 	
-	private int idSelectionneTypeRando, idSelectionneVueRando;
-	private RadioGroup rgChoixTypeRando, rgChoixVue;
+	private int idSelectionneVueRando;
+	private RadioGroup rgChoixVue;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion);
 		//TextView tvPseudo = (TextView)findViewById(R.id.tvReglagePseudo);
 		EditText etPseudo = (EditText)findViewById(R.id.etReglagePseudo);
-		final RadioGroup rgChoixTypeRando = (RadioGroup)findViewById(R.id.rgChoixTypeRando);
 		final RadioGroup rgChoixVue = (RadioGroup)findViewById(R.id.rgChoixVue);
 		Button btValidateChoice =(Button) findViewById(R.id.btValidateChoice);
 		
@@ -31,18 +30,7 @@ public class ConnexionActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				idSelectionneTypeRando =  rgChoixTypeRando.getCheckedRadioButtonId();
 				 idSelectionneVueRando =  rgChoixVue.getCheckedRadioButtonId();
-				 switch (idSelectionneTypeRando) {
-					case R.id.rb4x4:
-						FragMap.TYPE_RANDO = "mode4x4";
-						break;
-					case R.id.rbPied:
-						FragMap.TYPE_RANDO = "modePedestre";
-						break;
-					default:
-						break;
-					}
 					
 					switch (idSelectionneVueRando) {
 					case R.id.rbSatView:

@@ -6,15 +6,14 @@
 
 <LinearLayout 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/tvReglagePseudo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tvReglagePseudo"
-         />
+        android:text="@string/tvReglagePseudo" />
 
     <EditText
         android:id="@+id/etReglagePseudo"
@@ -37,6 +36,12 @@
         android:layout_gravity="center" >
 
         <RadioButton
+            android:id="@+id/rbTraficView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rbTraficView" />
+
+        <RadioButton
             android:id="@+id/rbSatView"
             android:text="@string/rbSatView"
             android:layout_width="wrap_content"
@@ -46,36 +51,14 @@
             android:text="@string/rbStreetView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <RadioButton
-            android:id="@+id/rbTraficView"
-            android:text="@string/rbTraficView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
     </RadioGroup>
-    
-     <TextView
-        android:id="@+id/tvReglageChoixTypeRando"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tvReglageChoixTypeRando"
-         />
     
     <RadioGroup
         android:id="@+id/rgChoixTypeRando"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" >
-
-        <RadioButton
-            android:id="@+id/rb4x4"
-            android:text="@string/rb4x4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:id="@+id/rbPied"
-            android:text="@string/rbPied"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </RadioGroup>
 	<Button
 	     android:id="@+id/btValidateChoice"

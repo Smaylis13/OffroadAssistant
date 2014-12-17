@@ -73,8 +73,11 @@ import android.widget.Toast;
     private View mFragmentContainerView;
     
     public static final String[] names = new String[] { "Carte",
-        "Mes trajets", "Contacts", "Déconnexion" };
+        "Mes trajets", "Contacts", "Inviter" , "Déconnexion" };
 
+    public static final Integer[] icons = { R.drawable.carte,
+        R.drawable.trajet, R.drawable.contacts, R.drawable.add70, R.drawable.deconnexion };
+    
     private static MenuItem enregistrer;
     private static MenuItem effacer ;
     private static MenuItem play_pause;
@@ -87,9 +90,7 @@ import android.widget.Toast;
 	private int niveauDiff = 5;
 	private EditText etNomRando, etDescRando;
 	private Calendar calendar;
-	
-public static final Integer[] icons = { R.drawable.carte,
-        R.drawable.trajet, R.drawable.contacts, R.drawable.deconnexion };
+
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;

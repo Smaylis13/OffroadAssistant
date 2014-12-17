@@ -11,6 +11,15 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="trajet">Mes trajets</string>
+    <string name="inviter">Inviter</string>
+    
+    <!-- Inviter un participantt -->
+    <string name="contact_name">Inviter un participant</string>
+    <string name="invit_participant">Image_Invit_participant</string>
+    <string name="choix_contact">Choix du contact</string>
+    <string name="send">Envoyer une invitation</string>
+    <string name="nom_du_contact">Nom du contact</string>
+    
     
     <string name="create_account">Créer un compte</string>
     <string name="login">Login</string>
