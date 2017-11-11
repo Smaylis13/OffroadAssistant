@@ -1,15 +1,21 @@
 package fr.masterdapm.toulon;
 
 import android.app.ActionBar;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.widget.DrawerLayout;
 import android.telephony.SmsManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +23,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 import fr.masterdapm.toulon.connexion.ConnexionActivity;
 import fr.masterdapm.toulon.fragment.CMesTrajets;
-import fr.masterdapm.toulon.fragment.FragContacts;
+import fr.masterdapm.toulon.fragment.FragParticipant;
 import fr.masterdapm.toulon.fragment.FragInvit;
 import fr.masterdapm.toulon.fragment.FragMap;
+import fr.masterdapm.toulon.receiver.SmsReceiver;
 
 
 public class MainActivity extends Activity
@@ -35,12 +42,9 @@ public class MainActivity extends Activity
      */
     private static CharSequence mTitle="Carte";
     
-    // Pour la reception de sms
-    public final static String RAID_SMS = "raid_app";
-    
-   
     // TAG
     private static String TAG="MAP"; 
+    private final int PICK_CONTACT = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +53,11 @@ public class MainActivity extends Activity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        //mTitle = getTitle();
-        // Set up the drawer.
+
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
-
 
     @Override
     protected void onResume() {
@@ -89,7 +91,7 @@ public class MainActivity extends Activity
 			TAG = "CONTACTS";
 			fragment = fragmentManager.findFragmentByTag(TAG);
 			if(fragment == null){ 
-				fragment = new FragContacts();
+				fragment = new FragParticipant();
 			}
 			break;
 			
@@ -131,9 +133,7 @@ public class MainActivity extends Activity
             .commit();
         }       
     }
- 
     
-
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -168,65 +168,74 @@ public class MainActivity extends Activity
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    
-    
-    //////////////////////////////////////////////
-    
-    
-    
+ 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     public void inviterParticipant(View v) {
-    	
-    	// Récupération du numéro de téléphone entré par l'organisateur du RAID
-    	EditText editText = (EditText)findViewById(R.id.contact);
-    	String str = editText.getText().toString();
-    	SmsManager smsManager = SmsManager.getDefault();
-    	// "0651271872"
-    	smsManager.sendTextMessage("0651271872", null, "Salut", null, null);    	
-    	
-    	
+    	try {
+	    	// Récupération du numéro de téléphone entré par l'organisateur du RAID
+	    	EditText editText = (EditText)findViewById(R.id.contact);
+	    	String str = editText.getText().toString();
+	    	
+	    	FragParticipant.NUM_TEL = str;
+	    	
+	    	SmsManager smsManager = SmsManager.getDefault();
+	    	smsManager.sendTextMessage(str, null,
+	    			SmsReceiver.EN_TETE_INVITATION + ";", null, null);
+			LayoutInflater inflater = getLayoutInflater();
+			View toastRoot = null;
+			// The actual toast generated here.
+			Toast toast = new Toast(getApplicationContext());
+	        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL,0, 0);
+			toast.setDuration(Toast.LENGTH_SHORT);
+	        toastRoot = inflater.inflate(R.layout.activity_together, null);
+			toast.setView(toastRoot);
+			toast.show();
+    	}catch(Exception e){
+    		Toast.makeText(getApplicationContext(),"Mauvais numéro !", Toast.LENGTH_SHORT).show();
+    	}
+
     }
-    
-}
+	 public void readcontact(View v){
+	  try {
+		   Intent intent = new Intent(Intent.ACTION_PICK);
+		   intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+		   startActivityForResult(intent, PICK_CONTACT); 
+	  } catch (Exception e) {
+	          e.printStackTrace();
+	    }
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Fonction qui affiche la liste des contacts (en Log pour le moment )
-/* public void displayContacts(View v) {
-	     
-	      ContentResolver cr = getContentResolver();
-	        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-	                null, null, null, null);
-	        if (cur.getCount() > 0) {
-	            while (cur.moveToNext()) {
-	                  String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-	                  String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-	                  if (Integer.parseInt(cur.getString(
-	                        cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-	                     Cursor pCur = cr.query(
-	                               ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-	                               null,
-	                               ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
-	                               new String[]{id}, null);
-	                     while (pCur.moveToNext()) {
-	                         String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-	                         Log.d("Résultat","Name: " + name + ", Phone No: " + phoneNo);
-	                         }
-	                    pCur.close();
+	public void onActivityResult(int reqCode, int resultCode, Intent data) {
+	    super.onActivityResult(reqCode, resultCode, data);
+	
+	    switch (reqCode) {
+	      case (PICK_CONTACT) :
+	        if (resultCode == Activity.RESULT_OK) {
+	            Uri contactData = data.getData();
+	              Cursor c =  managedQuery(contactData, null, null, null, null);
+	              startManagingCursor(c);
+	              if (c.moveToFirst()) {
+	                  String name = c.getString(0);
+	             // Récupération du numéro de téléphone entré
+	            	EditText editText = (EditText)findViewById(R.id.contact);
+	            	String phoneNumber=" ";
+	            	String contactId = c.getString(c.getColumnIndex(ContactsContract.Contacts._ID));
+	                Cursor phones = getContentResolver()
+	                		.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+	                				ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId,null, null);
+	                if (phones.moveToNext()){
+	                  phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+	              	editText.setText(phoneNumber );
+	              	Toast.makeText(this, "Invitation prête à être envoyé à "+name, Toast.LENGTH_LONG).show();
+	                }else{
+	                    Toast.makeText(this, "Numéro non éxistant!", Toast.LENGTH_LONG).show();
+	                	editText.setText("XXXXXX");
 	                }
-	            }
-	        }
-	    }*/
+	                phones.close();
+	               }
+	         }
+	       break;
+	    }
+	}  
+}

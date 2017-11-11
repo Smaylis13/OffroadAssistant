@@ -6,22 +6,24 @@ import fr.masterdapm.toulon.fragment.FragMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class ConnexionActivity extends Activity {
 	
-	private int idSelectionneVueRando;
-	private RadioGroup rgChoixVue;
-    @Override
+	public static String sPseudo;
+	private int mIdSelectionneVueRando;
+	
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion);
-		//TextView tvPseudo = (TextView)findViewById(R.id.tvReglagePseudo);
-		EditText etPseudo = (EditText)findViewById(R.id.etReglagePseudo);
+		
 		final RadioGroup rgChoixVue = (RadioGroup)findViewById(R.id.rgChoixVue);
 		Button btValidateChoice =(Button) findViewById(R.id.btValidateChoice);
 		
@@ -30,50 +32,34 @@ public class ConnexionActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				 idSelectionneVueRando =  rgChoixVue.getCheckedRadioButtonId();
+				EditText etPseudo = (EditText)findViewById(R.id.etReglagePseudo);
+				sPseudo = etPseudo.getText().toString();
+				if(!(sPseudo.isEmpty())){
 					
-					switch (idSelectionneVueRando) {
-					case R.id.rbSatView:
-						FragMap.VUE_RANDO = "SatView";
-						break;
-					case R.id.rbStreetView:
-						FragMap.VUE_RANDO = "StreetView";
-						break;
-					case R.id.rbTraficView:
-						FragMap.VUE_RANDO = "TerrainView";
-						break;
-					default:
-						break;
-					}
-					Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
-					startActivity(intent);
+					mIdSelectionneVueRando =  rgChoixVue.getCheckedRadioButtonId();
+						
+						switch (mIdSelectionneVueRando) {
+						case R.id.rbSatView:
+							FragMap.VUE_RANDO = "SatView";
+							break;
+						case R.id.rbStreetView:
+							FragMap.VUE_RANDO = "StreetView";
+							break;
+						case R.id.rbTraficView:
+							FragMap.VUE_RANDO = "TerrainView";
+							break;
+						default:
+							break;
+						}
+						Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
+						startActivity(intent);
+				}else{
+					Toast.makeText(getApplicationContext(),
+							"Please enter your user name !",
+							Toast.LENGTH_LONG)
+							.show();
+				}
 			}
-		});
-		
-		
-		
+		});	
 	}
-	
-	
-	/* Connexion Activity
-	 * private Button logIn;
-	private Button createAccount;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connexion);
-        logIn = (Button) findViewById(R.id.connect);
-        createAccount = (Button) findViewById(R.id.create_account);
-        
-        //Action sur le bouton connexion
-        logIn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
-				startActivity(intent);
-			}
-		});
-    }*/
 }

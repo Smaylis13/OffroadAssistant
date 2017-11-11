@@ -77,4 +77,10 @@
 <color name="red13">#FFCACA</color>
 <color name="red14">#FFE4E4</color>
 
+    <color name="black_overlay">#66000000</color>
+    <color name="green">#33FF3300</color>
+	<color name="northPointer">#FF0000</color>
+	<color name="southPointer">#000000</color>
+	<color name="compassCircle">#C9C9C9</color>
+
 </resources>

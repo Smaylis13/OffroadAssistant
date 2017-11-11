@@ -21,6 +21,9 @@
     <string name="nom_du_contact">Nom du contact</string>
     
     
+    <!-- Liste des participants -->
+    <string name="Liste_contacts">Liste des contacts</string>
+    
     <string name="create_account">Créer un compte</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
@@ -31,7 +34,7 @@
 	<string name="rbSatView">Vue satellite</string>
 	<string name="rbStreetView">Street view </string>
 	<string name="rbTraficView">Vue terrain </string>
-	<string name="tvReglageChoixVue"> Chosissez la vue pour votre carte : </string>
+	<string name="tvReglageChoixVue"> Choisissez la vue pour votre carte : </string>
 	<string name="rb4x4"> mode 4x4 </string>
 	<string name="rbPied"> mode pédestre </string>
 	<string name="tvReglageChoixTypeRando"> Chosissez le mode de randonnée : </string>

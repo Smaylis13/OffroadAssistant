@@ -1,14 +1,10 @@
 package fr.masterdapm.toulon.util;
 
 
-import java.util.ArrayList;
 import java.util.List;
-
 import fr.masterdapm.toulon.R;
 import fr.masterdapm.toulon.fragment.CMesTrajets;
-import fr.masterdapm.toulon.sql.RandoBDD;
 import fr.masterdapm.toulon.sql.Randonnee;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class AdapterMesRandos extends BaseAdapter {
 	private LayoutInflater mInflater;
@@ -58,8 +53,6 @@ public class AdapterMesRandos extends BaseAdapter {
 		final ViewHolder holder;
 		if(convertView==null){
 			convertView = mInflater.inflate(R.layout.l_listviewperso, null);
-			//convertView = mInflater.inflate(R.layout.l_listviewperso,parent, false);
-
 			holder = new ViewHolder();
 			holder.tvNom = (TextView) convertView.findViewById(R.id.nomRandoLV);
 			holder.tvDesc = (TextView) convertView.findViewById(R.id.descRandoLV);
@@ -145,7 +138,7 @@ public class AdapterMesRandos extends BaseAdapter {
 		long s = modulo((dureeMilli / 1000), 60);
 		long m = modulo((dureeMilli / 60000), 60);
 		long h = dureeMilli / 3600000;
-		return h + "h" + m + "m" + s + "s" + ms + "ms";
+		return h + "h" + m + "m" + s + "s" ;//+ ms + "ms";
 	}
 	
 	class ViewHolder {

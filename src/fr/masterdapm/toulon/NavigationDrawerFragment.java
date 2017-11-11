@@ -73,7 +73,7 @@ import android.widget.Toast;
     private View mFragmentContainerView;
     
     public static final String[] names = new String[] { "Carte",
-        "Mes trajets", "Contacts", "Inviter" , "Déconnexion" };
+        "Mes trajets", "Participants", "Inviter" , "Déconnexion" };
 
     public static final Integer[] icons = { R.drawable.carte,
         R.drawable.trajet, R.drawable.contacts, R.drawable.add70, R.drawable.deconnexion };
@@ -81,8 +81,8 @@ import android.widget.Toast;
     private static MenuItem enregistrer;
     private static MenuItem effacer ;
     private static MenuItem play_pause;
-    private View alertDialogView, alertDialogSaveView;
-    private AlertDialog ad, adSave;
+    private View alertDialogSaveView;
+    private AlertDialog adSave;
     private Randonnee rando;
     private String nomRandoSave ;
 	private String descRandoSave ;
@@ -327,7 +327,6 @@ import android.widget.Toast;
 				FragMap.setEtatRandonnee("enPause");
 				calendar = Calendar.getInstance();
 				chronoB = calendar.getTimeInMillis();
-				// timeMS = calendar.getTimeInMillis();
 				FragMap.dureeRando += (chronoB - chronoA);
         		FragMap.setEtatRandonnee("demarrée");
                 toastRoot = inflater.inflate(R.layout.pause_toast, null);
@@ -336,10 +335,7 @@ import android.widget.Toast;
 	        	play_pause.setIcon(getResources().getDrawable(R.drawable.play1));
 	        	play_pause.setTitle("Play");
         	}
-
-        	
-        	//Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-            return true;
+        	return true;
         }
     	if (item.getItemId() == R.id.enregistrer){
     		/*
@@ -365,23 +361,7 @@ import android.widget.Toast;
 
     						nomRandoSave = etNomRando.getText().toString();
     						descRandoSave = etDescRando.getText().toString();
-    						/*
-    						 * rgDifficulte = (RadioGroup)
-    						 * findViewById(R.id.rgDifficulte); idSelectionne =
-    						 * rgDifficulte.getCheckedRadioButtonId(); switch
-    						 * (idSelectionne) { case R.id.dif1: niveauDiff = 1;
-    						 * break; case R.id.dif2: niveauDiff = 2; break; case
-    						 * R.id.dif3: niveauDiff = 3; break; case R.id.dif4:
-    						 * niveauDiff = 4; break; case R.id.dif5: niveauDiff =
-    						 * 5; break; default: break; }
-    						 */
-    						// Log.i("checked ",
-    						// String.valueOf(rgDifficulte.getCheckedRadioButtonId()));
-    						// rbDifficulte = (RadioButton)
-    						// findViewById(idSelectionne);
-    						// niveauDiff =
-    						// Integer.parseInt(rbDifficulte.getText().toString());
-    						// Log.i("niveau diff :",rbDifficulte.getText().toString());
+
     						calendar = Calendar.getInstance();
     						FragMap.dateDuJour = calendar.getTime();
     						SimpleDateFormat sdf = new SimpleDateFormat(
@@ -403,22 +383,23 @@ import android.widget.Toast;
 
     		adb2.setNegativeButton("Annuler",
     				new DialogInterface.OnClickListener() {
-
     					@Override
     					public void onClick(DialogInterface dialog, int which) {
     						FragMap.save = false;
     					}
     				});
     		adSave = adb2.create();
-
     		adSave.setOnDismissListener(new OnDismissListener() {
 
     			@Override
     			public void onDismiss(DialogInterface dialog) {
     				// TODO Auto-generated method stub
     				if (FragMap.save == true) {
+    					calendar = Calendar.getInstance();
+    					chronoB = calendar.getTimeInMillis();
+    					FragMap.dureeRando += (chronoB - chronoA);
     					FragMap.saveRando.open();
-    					// idRandoActuelle= RandoBDD.generateurId("rando");
+    					FragMap.dureeRando += (chronoB - chronoA);
     					rando = new Randonnee(FragMap.idRandoActuelle, nomRandoSave,
     							descRandoSave, FragMap.dureeRando, FragMap.ddj, niveauDiff,
     							FragMap.mesPoints);
@@ -434,20 +415,11 @@ import android.widget.Toast;
     				}
     			}
     		});
-    		
 			adSave.show();
-
-    		
-
 			return true;
     	}
     	if (item.getItemId() == R.id.effacer){
-			AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-	        //On instancie notre layout en tant que View
-	        LayoutInflater factory = LayoutInflater.from(getActivity().getBaseContext());
-	        final View alertDialogView = factory.inflate(
-	        		android.R.layout.select_dialog_multichoice, null);
-    		
+			AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());	
 			alert.setTitle("Effacer ?");
 			alert.setIcon(android.R.drawable.ic_dialog_alert);
 			alert.setMessage("Voulez vous vraiment effacer l'enregistrement en cours ?");
@@ -461,6 +433,7 @@ import android.widget.Toast;
 			        	play_pause.setTitle("Play");
 		    		}
 					FragMap.map.clear();
+					FragMap.mesPoints.clear();
 					FragMap.ClickOnEffacer = true;
 					enregistrer.setEnabled(false);
 					effacer.setEnabled(false);
@@ -469,11 +442,8 @@ import android.widget.Toast;
 			});
 			alert.setNegativeButton("Annuler", null);
 			alert.show();	
-
-
 			return true;
     	}
-
         return super.onOptionsItemSelected(item);
     }
 
